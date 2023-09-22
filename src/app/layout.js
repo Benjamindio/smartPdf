@@ -1,7 +1,11 @@
+import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Lato } from 'next/font/google'
+import { frFR } from '@clerk/localizations'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Lato({ 
+  subsets: ['latin'], 
+  weight: ["100","400", "700"]})
 
 export const metadata = {
   title: 'Create Next App',
@@ -10,8 +14,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ClerkProvider localization={frFR}>
+      <html lang="fr">
+        <body className={inter.className}>{children}</body>
+      </html>
+    </ClerkProvider>
   )
 }
