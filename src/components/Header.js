@@ -1,14 +1,22 @@
+'use client'
 import Link from 'next/link'
-import Image from 'next/image'
-import React from 'react'
+import React,{useEffect} from 'react'
 import { ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { UserButton, auth } from '@clerk/nextjs'
+import { UserButton, useAuth } from '@clerk/nextjs'
 import FileUpload from './FileUpload'
+import { useDispatch } from 'react-redux'
+import { login } from '@/redux/features/users'
 
-export default async function Header() {
-  const {userId} = await auth()
+export default function Header() {
+  const {userId} = useAuth()
+  const dispatch = useDispatch()
   const isAuth = !!userId
+  
+
+  if(userId) {
+    dispatch(login({userId}))
+  }
+ 
   
   return (
     <header className='absolute inset-x-0 top-0 z-50'>
