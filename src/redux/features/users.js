@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
  value: {
-    userId:null
+    userId:null,
+    
+    embeddings:null
     },
 };
 
@@ -15,8 +17,13 @@ export const usersSlice = createSlice({
      state.value.userId = action.payload.userId;
      console.log(state.value.userId)
    },
+   addEmbeddings: (state, action) => {
+     state.value.embeddings = action.payload.embeddings;
+     console.log(state.value.embeddings)
+   },
+   
  },
 });
 
-export const { login } = usersSlice.actions;
+export const { login, addEmbeddings, addUrl } = usersSlice.actions;
 export default usersSlice.reducer;

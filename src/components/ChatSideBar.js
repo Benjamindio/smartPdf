@@ -5,11 +5,14 @@ import { MessageCircle, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from './ui/button'
 
+
+
+
 export default function ChatSideBar(props) {
     const [chatsData, setChatsData] = useState([])
-    const [activeChat, setActiveChat] = useState('')
+    
     const {isLoaded,user} = useUser()
-
+    console.log(props.userId)
     useEffect(()=> {
         fetch('http://localhost:3000/chats/getUserChats', {
           method:'POST',
@@ -18,7 +21,7 @@ export default function ChatSideBar(props) {
         }).then((response)=> response.json())
         .then((data)=> {
           if(data.result) {
-                
+             
             setChatsData([...data.chatsData])
             
           } else {
@@ -29,7 +32,7 @@ export default function ChatSideBar(props) {
           
         })
         
-      },[])
+      },[props.chatId])
 
       
 
@@ -38,7 +41,7 @@ export default function ChatSideBar(props) {
   return (
     <div className='w-full h-screen p-4'>
         <div className='h-1/6 flex flex-col justify-between'>
-            <h1 className='text-3xl font-bold text-[#0A042A]'>SmartPdf<span className=' text-transparent bg-clip-text bg-gradient-to-bl from-pink-300 via-purple-300 to-indigo-400'>.ai</span></h1>
+            <Link href='/' className='text-3xl font-bold text-[#0A042A]'>SmartPdf<span className=' text-transparent bg-clip-text bg-gradient-to-bl from-pink-300 via-purple-300 to-indigo-400'>.ai</span></Link>
             {isLoaded && (<div className='flex items-center justify-evenly gap-2 -mb-8'>
               <UserButton afterSignOutUrl='/'/>
               {user.emailAddresses.map((email)=> (
@@ -51,11 +54,11 @@ export default function ChatSideBar(props) {
               </div> )}
               <div className='border-b-2 -mx-2'></div>
           </div>
-          <div className='flex flex-col justify-evenly items-center h-3/6 '  >
+          <div className='flex flex-col gap-5  h-3/6 pt-10'  >
           {chatsData.map((chat) => (
-            <Link href={`/chat/${chat.token}`} className={`${chat.token === props.chatId ? 'text-[#5271FF]' : 'text-[#0A042A]'} flex gap-3 items-center cursor-pointer  hover:text-[#5271FF]`} key={chat.token} onClick={()=>{setActiveChat(chat.token)}}> 
+            <Link href={`/chat/${chat.token}`} className={`${chat.token === props.chatId ? 'text-[#5271FF]' : 'text-[#0A042A]'} flex gap-3 items-center cursor-pointer  hover:text-[#5271FF]`} key={chat.token} > 
               <MessageCircle className=''/>
-              <p className=''>{chat.name}</p>
+              <p className='w-full overflow-hidden text-sm truncate whitespace-nowrap text-ellipsis'>{chat.name}</p>
             </Link>
             
           ))}

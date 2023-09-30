@@ -1,8 +1,11 @@
 'use client'
-import React from 'react'
+import React, { use } from 'react'
 import {UserButton, useAuth, useUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation'
 import ChatSideBar from '@/components/ChatSideBar'
+import PDFViewer from '@/components/PDFViewer'
+import Chat from '@/components/Chat'
+import { useSelector } from 'react-redux'
 
 
 
@@ -26,11 +29,11 @@ export default function ChatPage({params:{chatId}}) {
         </div>
       {/*pdf view*/}
       <div className='max-h-screen p-4 overflow-scroll flex-[5]'>
-        
+        <PDFViewer chatId={chatId} />
       </div>
       {/*chat component*/}
       <div className='border-l-4 border-l-slate-200 flex-[3]'>
-        
+        <Chat chatId={chatId}/>
       </div>
 
     </div>
