@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 
 
 
-export default function ChatPage({params:{chatId}}) {
+export default function ChatPage({params:{token}}) {
     const {userId} = useAuth()
     
 
@@ -21,19 +21,19 @@ export default function ChatPage({params:{chatId}}) {
     
     
   return (
-    <div className='flex max-h-screen overflow-scroll'>
+    <div className='flex max-h-screen '>
       <div className='flex w-full h-screen '>
         {/*chat sidebar*/}
         <div className=' border-2 flex-[1] max-w-xs'>
-          {<ChatSideBar userId={userId} chatId={chatId}/>}
+          {<ChatSideBar userId={userId} token={token}/>}
         </div>
       {/*pdf view*/}
-      <div className='max-h-screen p-4 overflow-scroll flex-[5]'>
-        <PDFViewer chatId={chatId} />
+      <div className='max-h-screen p-4  flex-[5]'>
+        <PDFViewer token={token} />
       </div>
       {/*chat component*/}
       <div className='border-l-4 border-l-slate-200 flex-[3]'>
-        <Chat chatId={chatId}/>
+        <Chat token={token}/>
       </div>
 
     </div>

@@ -4,12 +4,10 @@ import toast from 'react-hot-toast'
 
 export default function PDFViewer(props) {
     const [pdfUrl, setPdfUrl] = useState('')
-
+    
     useEffect(()=> {
-        fetch('http://localhost:3000/chats/getChatPdf', {
-          method:'POST',
-          headers:{'Content-Type': 'application/json'}, 
-          body:JSON.stringify({chatId:props.chatId})
+        fetch(`http://localhost:3000/chats/getChatPdf/${props.token}`, {
+          method:'GET',
         }).then((response)=> response.json())
         .then((data)=> {
           if(data.result) {
@@ -17,14 +15,14 @@ export default function PDFViewer(props) {
             setPdfUrl(data.pdfUrl)
         
           } else {
-            console.log(data)
+            
             toast.error('No chats founds')
             redirect('/')
           }
           
         })
         
-      },[props.chatId])
+      },[props.token])
 
       if(pdfUrl === undefined) {
         return <div>{toast.loading('récupération du pdf...')}</div>

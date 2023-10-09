@@ -12,7 +12,7 @@ export default function ChatSideBar(props) {
     const [chatsData, setChatsData] = useState([])
     
     const {isLoaded,user} = useUser()
-    console.log(props.userId)
+    
     useEffect(()=> {
         fetch('http://localhost:3000/chats/getUserChats', {
           method:'POST',
@@ -32,7 +32,7 @@ export default function ChatSideBar(props) {
           
         })
         
-      },[props.chatId])
+      },[props.token])
 
       
 
@@ -56,7 +56,7 @@ export default function ChatSideBar(props) {
           </div>
           <div className='flex flex-col gap-5  h-3/6 pt-10'  >
           {chatsData.map((chat) => (
-            <Link href={`/chat/${chat.token}`} className={`${chat.token === props.chatId ? 'text-[#5271FF]' : 'text-[#0A042A]'} flex gap-3 items-center cursor-pointer  hover:text-[#5271FF]`} key={chat.token} > 
+            <Link href={`/chat/${chat.token}`} className={`${chat.token === props.token ? 'text-[#5271FF]' : 'text-[#0A042A]'} flex gap-3 items-center cursor-pointer  hover:text-[#5271FF]`} key={chat.token} > 
               <MessageCircle className=''/>
               <p className='w-full overflow-hidden text-sm truncate whitespace-nowrap text-ellipsis'>{chat.name}</p>
             </Link>

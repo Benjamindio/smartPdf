@@ -28,31 +28,28 @@ export default function FileUpload(props) {
                 setPdfUrl(data)
                 setVectorize(!vectorize)
             console.log('upload sucessfully')
+            console.log('saving to pinecone')
+            return toast.promise(fetch('http://localhost:3000/chats/create-chat', {
+                method:'POST',
+                headers:{'Content-Type': 'application/json'}, 
+                body:JSON.stringify({name:data.name, url:data.url, userId})
+            }), {
+                loading: 'On donne à manger au robot, encore quelques instants...',
+                success: 'Go to go ! ',
+                error: 'Une erreur est survenue',
+            })
             }
             
-        }).then(()=> {
-            console.log('saving to pinecone')
-         toast.promise(fetch('http://localhost:3000/chats/create-chat', {
-            method:'POST',
-            headers:{'Content-Type': 'application/json'}, 
-            body:JSON.stringify({name:pdfUrl.name, url:pdfUrl.url, userId})
         })
         .then((response) => response.json())
         .then((data)=> {
             console.log(data)
             if(!data.error) {
-                router.push(`/chat/${data.chat_id}`)
+                router.push(`/chat/${data.token}`)
             } else {
                 console.log(data.error)
             }
             
-        }), {
-            loading: 'On donne à manger au robot, encore quelques instants...',
-            success: 'Go to go ! ',
-            error: 'Une erreur est survenue',
-        })
-        console.log(pdfUrl)
-
         })
         
     }
