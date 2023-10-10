@@ -21,6 +21,7 @@ export default function FileUpload(props) {
         await toast.promise(fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}upload`, {
             method:'POST', 
             body:formData,
+            mode: 'no-cors',
         }).then((response) => response.json())
         .then((data) => {
             if(!data.url || !data.name) {
