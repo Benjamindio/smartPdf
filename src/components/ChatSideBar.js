@@ -4,14 +4,16 @@ import toast from 'react-hot-toast'
 import { MessageCircle, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from './ui/button'
+import { Progress } from './ui/progress'
 
 
 
 
 export default function ChatSideBar(props) {
     const [chatsData, setChatsData] = useState([])
-    
+    const [usage, setUsage] = useState(1)
     const {isLoaded,user} = useUser()
+
     
     useEffect(()=> {
         fetch('http://localhost:3000/chats/getUserChats', {
@@ -31,17 +33,29 @@ export default function ChatSideBar(props) {
           }
           
         })
-        
+        fetch('http://localhost:3000/users/getUserUsage', {
+          method:'POST', 
+          headers:{'Content-Type' : 'application/json'}, 
+          body:JSON.stringify({userId:props.userId})
+        }).then((response) => response.json())
+        .then((data) => {
+          setUsage(data.usage)
+        }) 
+       
       },[props.token])
 
-      
-
+      useEffect(() => {
+        if(usage === 0 ) {
+          toast.error(`Vous avez atteint la limite d'upload`)
+         }
+      }, [usage])
+       
 
    
   return (
     <div className='w-full h-screen p-4'>
         <div className='h-1/6 flex flex-col justify-between'>
-            <Link href='/' className='text-3xl font-bold text-[#0A042A]'>SmartPdf<span className=' text-transparent bg-clip-text bg-gradient-to-bl from-pink-300 via-purple-300 to-indigo-400'>.ai</span></Link>
+            <Link href='/' className='text-3xl font-bold text-[#0A042A]'>TalkingPDF<span className=' text-transparent bg-clip-text bg-gradient-to-bl from-pink-300 via-purple-300 to-indigo-400'>.ai</span></Link>
             {isLoaded && (<div className='flex items-center justify-evenly gap-2 -mb-8'>
               <UserButton afterSignOutUrl='/'/>
               {user.emailAddresses.map((email)=> (
@@ -63,7 +77,10 @@ export default function ChatSideBar(props) {
             
           ))}
           </div>
-          <div className=' h-1/6'></div>
+          <div className=' h-1/6'>
+            <Progress value={usage} max={2} />
+            {usage === 0 ? (<p className='text-center text-red-500 '>Vous avez atteint la limite d'upload</p>) : (<p className='flex flex-row items-end'>Nombre d'uploads restants : {usage}</p>)}
+          </div>
           <div className='h-1/6 flex items-end justify-center'>
             <Link href='/'>
                 <Button>

@@ -3,19 +3,22 @@ import { Inbox } from 'lucide-react'
 import React, {useState, useEffect} from 'react'
 import { useDropzone } from 'react-dropzone'
 import toast from 'react-hot-toast'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
+import { updateUsage } from '@/redux/features/users'
 
 export default function FileUpload(props) {
+    const dispatch = useDispatch()
     const router = useRouter()
     const formData = new FormData()
     const [vectorize, setVectorize] = useState(false)
     const [pdfUrl, setPdfUrl] = useState(null)
     const userId = useSelector((state) => state.users.value.userId)
-    
+    const usage = useSelector((state) => state.users.value.usage)
 
     const upload = async () => {
-        await fetch('http://localhost:3000/upload', {
+        if(usage > 0){
+        await toast.promise(fetch('http://localhost:3000/upload', {
             method:'POST', 
             body:formData,
         }).then((response) => response.json())
@@ -29,14 +32,10 @@ export default function FileUpload(props) {
                 setVectorize(!vectorize)
             console.log('upload sucessfully')
             console.log('saving to pinecone')
-            return toast.promise(fetch('http://localhost:3000/chats/create-chat', {
+            return fetch('http://localhost:3000/chats/create-chat', {
                 method:'POST',
                 headers:{'Content-Type': 'application/json'}, 
                 body:JSON.stringify({name:data.name, url:data.url, userId})
-            }), {
-                loading: 'On donne à manger au robot, encore quelques instants...',
-                success: 'Go to go ! ',
-                error: 'Une erreur est survenue',
             })
             }
             
@@ -46,12 +45,35 @@ export default function FileUpload(props) {
             console.log(data)
             if(!data.error) {
                 router.push(`/chat/${data.token}`)
+                dispatch(updateUsage())
+                let updatedUsage = usage -1
+                fetch('http://localhost:3000/users/updateUsage', {
+                    method:'POST', 
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({userId, usage : updatedUsage})
+                })
             } else {
-                console.log(data.error)
+                toast.error(data.error)
+            
             }
             
+        }), {
+            loading: 'Upload en cours...',
+            success: 'Upload réussi ! ',
+            error: 'Une erreur est survenue',
         })
-        
+        } else {
+            fetch('http://localhost:3000/chats/userFirstChat', {
+                method:'POST',
+                headers:{'Content-Type': 'application/json'},
+                body:JSON.stringify({userId})
+            }).then((response) => response.json())
+            .then((data) => {
+                router.push(`/chat/${data.token}`)
+            })
+            
+
+        }
     }
     
     const {getRootProps, getInputProps} = useDropzone({
@@ -69,11 +91,7 @@ export default function FileUpload(props) {
                 formData.append('pdfFromFront', file)
             
                 console.log("uploading...")
-                toast.promise(upload(),{
-                    loading: 'Upload en cours...',
-                    success: 'Upload réussi !',
-                    error: 'Une erreur est survenue',
-                })
+                upload()
             }catch {
                 console.log(error)
             }

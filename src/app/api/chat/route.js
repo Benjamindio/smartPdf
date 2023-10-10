@@ -16,7 +16,7 @@ export async function POST(req) {
     try {
         
         const {messages, token} = await req.json()
-        console.log(token)
+       
        
 
         
