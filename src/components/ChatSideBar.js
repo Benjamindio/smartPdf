@@ -16,7 +16,7 @@ export default function ChatSideBar(props) {
 
     
     useEffect(()=> {
-        fetch('http://localhost:3000/chats/getUserChats', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/getUserChats`, {
           method:'POST',
           headers:{'Content-Type': 'application/json'}, 
           body:JSON.stringify({userId:props.userId})
@@ -33,7 +33,7 @@ export default function ChatSideBar(props) {
           }
           
         })
-        fetch('http://localhost:3000/users/getUserUsage', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}users/getUserUsage`, {
           method:'POST', 
           headers:{'Content-Type' : 'application/json'}, 
           body:JSON.stringify({userId:props.userId})

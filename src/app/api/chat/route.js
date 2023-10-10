@@ -43,7 +43,7 @@ export async function POST(req) {
         const stream = OpenAIStream(response, {
             onStart: async () => {
                 // save user message into db
-                fetch('http://localhost:3000/chats/saveMessage', {
+                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/saveMessage`, {
                     method:'POST',
                     headers:{'Content-Type': 'application/json'}, 
                     body:JSON.stringify({token, content: lastMessage.content, role:'user'})
@@ -51,7 +51,7 @@ export async function POST(req) {
             }, 
             onCompletion: async (completion) => {
                 //save ai message into db 
-                fetch('http://localhost:3000/chats/saveMessage', {
+                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/saveMessage`, {
                     method:'POST',
                     headers:{'Content-Type': 'application/json'}, 
                     body:JSON.stringify({token, role:'system',content:completion})

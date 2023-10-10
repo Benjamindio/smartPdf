@@ -6,7 +6,7 @@ export default function PDFViewer(props) {
     const [pdfUrl, setPdfUrl] = useState('')
     
     useEffect(()=> {
-        fetch(`http://localhost:3000/chats/getChatPdf/${props.token}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/getChatPdf/${props.token}`, {
           method:'GET',
         }).then((response)=> response.json())
         .then((data)=> {

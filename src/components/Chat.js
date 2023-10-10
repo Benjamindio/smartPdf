@@ -29,7 +29,7 @@ export default function Chat(props) {
        
     }, [messages])
     useEffect(() => {
-        fetch(`http://localhost:3000/chats/getMessages/${props.token}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/getMessages/${props.token}`, {
             method:'GET'
         }).then((response) => response.json())
         .then((data) => {

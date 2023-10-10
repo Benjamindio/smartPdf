@@ -16,7 +16,7 @@ export default function Header() {
   
   if(userId){
   useEffect(() => {
-    fetch('http://localhost:3000/users/login', {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}users/login`, {
       method:'POST',
       headers:{
         'Content-Type':'application/json'
@@ -27,7 +27,7 @@ export default function Header() {
     .then((data) => {
       dispatch(login({userId, usage:data.usage}))
     })  
-    fetch('http://localhost:3000/chats/userFirstChat', {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/userFirstChat`, {
       method:'POST', 
       headers:{'Content-Type' : 'application/json'},
       body:JSON.stringify({userId})

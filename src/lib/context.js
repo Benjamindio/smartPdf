@@ -3,7 +3,7 @@
 
 export async function getContext(token, query) {
 
-   return fetch('http://localhost:3000/chats/getMatchesFromEmbeddings', {
+   return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/getMatchesFromEmbeddings`, {
         method:'POST',
         headers:{'Content-Type': 'application/json'}, 
         body:JSON.stringify({token, query

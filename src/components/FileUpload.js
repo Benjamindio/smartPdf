@@ -18,7 +18,7 @@ export default function FileUpload(props) {
 
     const upload = async () => {
         if(usage > 0){
-        await toast.promise(fetch('http://localhost:3000/upload', {
+        await toast.promise(fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}upload`, {
             method:'POST', 
             body:formData,
         }).then((response) => response.json())
@@ -32,7 +32,7 @@ export default function FileUpload(props) {
                 setVectorize(!vectorize)
             console.log('upload sucessfully')
             console.log('saving to pinecone')
-            return fetch('http://localhost:3000/chats/create-chat', {
+            return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/create-chat`, {
                 method:'POST',
                 headers:{'Content-Type': 'application/json'}, 
                 body:JSON.stringify({name:data.name, url:data.url, userId})
@@ -47,7 +47,7 @@ export default function FileUpload(props) {
                 router.push(`/chat/${data.token}`)
                 dispatch(updateUsage())
                 let updatedUsage = usage -1
-                fetch('http://localhost:3000/users/updateUsage', {
+                fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}users/updateUsage`, {
                     method:'POST', 
                     headers:{'Content-Type':'application/json'},
                     body:JSON.stringify({userId, usage : updatedUsage})
@@ -63,7 +63,7 @@ export default function FileUpload(props) {
             error: 'Une erreur est survenue',
         })
         } else {
-            fetch('http://localhost:3000/chats/userFirstChat', {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}chats/userFirstChat`, {
                 method:'POST',
                 headers:{'Content-Type': 'application/json'},
                 body:JSON.stringify({userId})
