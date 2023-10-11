@@ -20,7 +20,9 @@ export default function FileUpload(props) {
         if(usage > 0){
         await toast.promise(fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}upload`, {
             method:'POST', 
+            headers:{'Content-Type':'multipart/form-data'},
             body:formData,
+            
             
         }).then((response) => response.json())
         .then((data) => {
@@ -81,7 +83,7 @@ export default function FileUpload(props) {
         accept:{"application/pdf" :[".pdf"]},
         maxFiles:1,
         onDrop: async (acceptedFiles) => {
-            console.log(acceptedFiles)
+            
             const file = acceptedFiles[0]
             if(file.size > 10 * 1024 * 1024) {
                 //not more than 10mb

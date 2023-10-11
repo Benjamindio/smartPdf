@@ -30,5 +30,10 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
   }
 }
