@@ -20,7 +20,6 @@ export default function FileUpload(props) {
         if(usage > 0){
         await toast.promise(fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}upload`, {
             method:'POST', 
-            headers:{'Content-Type':'multipart/form-data'},
             body:formData,
             
             
