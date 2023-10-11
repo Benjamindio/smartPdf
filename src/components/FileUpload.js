@@ -32,7 +32,7 @@ export default function FileUpload(props) {
                 toast.error('Une erreur est survenue')
                 return; 
             } else {
-                console.log(data)
+                
                 setPdfUrl(data)
                 setVectorize(!vectorize)
             console.log('upload sucessfully')
