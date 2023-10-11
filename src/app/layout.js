@@ -4,6 +4,7 @@ import { Lato } from 'next/font/google'
 import { frFR } from '@clerk/localizations'
 import { Toaster } from 'react-hot-toast'
 import { Providers } from '@/redux/provider'
+import {Analytics} from '@vercel/analytics'
 
 
 const inter = Lato({ 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
         <Providers>
           {children}
         <Toaster />
+        <Analytics />
         </Providers>
         </body>
       </html>  
