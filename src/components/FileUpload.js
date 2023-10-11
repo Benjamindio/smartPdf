@@ -21,6 +21,9 @@ export default function FileUpload(props) {
         await toast.promise(fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}upload`, {
             method:'POST', 
             body:formData,
+            headers: {
+                Origin: 'https://smart-pdf-benjamindio.vercel.app',
+            }
             
             
         }).then((response) => response.json())
